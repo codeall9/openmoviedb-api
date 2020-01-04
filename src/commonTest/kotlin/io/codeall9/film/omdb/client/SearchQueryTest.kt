@@ -1,8 +1,11 @@
 package io.codeall9.film.omdb.client
 
 import io.codeall9.film.omdb.exception.OpenMovieException
-import io.codeall9.film.omdb.model.*
+import io.codeall9.film.omdb.model.ErrorStatus
+import io.codeall9.film.omdb.model.FilmInfo
+import io.codeall9.film.omdb.model.SearchResult
 import io.codeall9.film.omdb.runSuspend
+import io.codeall9.film.omdb.test.MockOmdbClient
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -42,32 +45,8 @@ class SearchQueryTest {
         SearchResult(starWars2, "50", "True")
     )
 
-    private val mockDb = object : OpenMovieDatabase {
-        override suspend fun getMovieById(id: String, year: String?, plot: String?): Movie {
-            throw NotImplementedError()
-        }
-
-        override suspend fun getMovieByTitle(title: String, year: String?, plot: String?): Movie {
-            throw NotImplementedError()
-        }
-
-        override suspend fun getSeriesById(id: String, year: String?, plot: String?): Series {
-            throw NotImplementedError()
-        }
-
-        override suspend fun getSeriesByTitle(title: String, year: String?, plot: String?): Series {
-            throw NotImplementedError()
-        }
-
-        override suspend fun getEpisodeById(id: String, year: String?, plot: String?): Episode {
-            throw NotImplementedError()
-        }
-
-        override suspend fun getEpisodeByTitle(title: String, year: String?, plot: String?): Episode {
-            throw NotImplementedError()
-        }
-
-        override suspend fun searchFilms(query: String, type: String?, year: String?, page: Int): SearchResult = when {
+    private val mockDb = MockOmdbClient.doOnSearch { query, type, _, page ->
+        when {
             query == OmdbClient.TYPE_MOVIE && type == OmdbClient.TYPE_MOVIE -> movieResult
             query == OmdbClient.TYPE_SERIES && type == OmdbClient.TYPE_SERIES -> seriesResult
             query == OmdbClient.TYPE_EPISODE && type == OmdbClient.TYPE_EPISODE -> episodeResult

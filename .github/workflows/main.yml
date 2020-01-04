@@ -3,8 +3,8 @@ name: Default CI
 on: [push, pull_request]
 
 jobs:
-  verify:
-    name: Build and Test
+  build:
+    name: Assembles and tests this project
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -25,7 +25,4 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-
-      - name: Check with Gradle
-        run: ./gradlew check
 

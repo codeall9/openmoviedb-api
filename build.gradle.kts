@@ -5,6 +5,7 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     maven(url = "https://dl.bintray.com/kotlin/ktor")
     maven(url = "https://dl.bintray.com/kotlin/kotlinx")
     maven(url = "https://dl.bintray.com/kotlin/kotlin-eap")
@@ -90,9 +91,41 @@ kotlin {
 //                api(npm("text-encoding"))
             }
         }
+
+        // Note that the Kotlin metadata is here, too.
+        // The mingwx64()/iosArm64() target is automatically skipped as incompatible in Linux builds.
+        configure(listOf(metadata(), jvm(), js())) {
+            mavenPublication {
+                val targetPublication = this@mavenPublication
+                tasks.withType<AbstractPublishToMaven>()
+                    .matching { it.publication == targetPublication }
+                    .all { onlyIf { findProperty("isLinux") == "true" } }
+//                    .all { onlyIf { findProperty("isWindows") == "true" } }
+//                    .all { onlyIf { findProperty("isMacOsX") == "true" } }
+            }
+        }
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            val user = project.findProperty("gpr.user") as String? ?: System.getenv("GITHUB_ACTOR")
+            val key = project.findProperty("gpr.key") as String? ?: System.getenv("GITHUB_TOKEN")
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/$user/openmoviedb-api")
+            credentials {
+                username = user
+                password = key
+            }
+        }
+    }
+    publications {
+        val jvm by getting { /* Setup the publication for target 'jvm' */ }
+        val js by getting { /* Setup the publication for target 'js' */ }
+        val metadata by getting { /* Setup the publication for Kotlin metadata */ }
+    }
+}
 /*tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
     .configureEach {
         kotlinOptions { freeCompilerArgs = listOf("-Xuse-experimental=kotlin.Experimental") }

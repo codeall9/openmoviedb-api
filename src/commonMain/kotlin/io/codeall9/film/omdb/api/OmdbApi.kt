@@ -1,6 +1,6 @@
 package io.codeall9.film.omdb.api
 
-import io.ktor.client.response.HttpResponse
+import io.ktor.client.statement.HttpResponse
 
 interface OmdbApi {
 

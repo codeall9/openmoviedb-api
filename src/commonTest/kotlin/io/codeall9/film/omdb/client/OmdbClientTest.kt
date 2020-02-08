@@ -7,6 +7,7 @@ import io.codeall9.film.omdb.runSuspend
 import io.codeall9.film.omdb.test.*
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
@@ -18,7 +19,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.headersOf
 import io.ktor.http.withCharset
-import kotlinx.io.charsets.Charsets
+import io.ktor.utils.io.charsets.Charsets
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -27,7 +28,7 @@ import kotlin.test.fail
 internal class OmdbClientTest {
 
     private val invalidEpisode = testEpisode1.copy(imdbId = "INVALID", title = "INVALID")
-    private val mockHandler: suspend (HttpRequestData) -> HttpResponseData = { req ->
+    private val mockHandler: suspend MockRequestHandleScope.(HttpRequestData) -> HttpResponseData = { req ->
         val headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.withCharset(Charsets.UTF_8).toString())
         val params = req.url.parameters
         val id = params["i"]

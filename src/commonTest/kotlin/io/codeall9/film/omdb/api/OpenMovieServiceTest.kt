@@ -12,6 +12,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.Url
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 internal class OpenMovieServiceTest {
 
@@ -64,6 +65,13 @@ internal class OpenMovieServiceTest {
             assertEquals("2", parameters[OmdbParameters.PAGE])
             assertEquals("json", parameters[OmdbParameters.FORMAT])
             assertEquals("1", parameters[OmdbParameters.VERSION])
+        }
+    }
+
+    @Test
+    fun shouldRequireIdOrTitleNotNull() {
+        assertFailsWith<IllegalArgumentException> {
+            runSuspend { service.getDetail(null, null, null, null, null, null) }
         }
     }
 

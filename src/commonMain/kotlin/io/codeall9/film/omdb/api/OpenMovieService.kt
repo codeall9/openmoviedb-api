@@ -24,14 +24,19 @@ internal class OpenMovieService (private val client: HttpClient) : OmdbApi {
         plot: String?,
         format: String?,
         version: String
-    ): HttpResponse = client.get {
-        parameter(IMDB_ID, id)
-        parameter(TITLE, title)
-        parameter(RESULT_TYPE, type)
-        parameter(YEAR, year)
-        parameter(PLOT, plot)
-        parameter(FORMAT, format)
-        parameter(VERSION, version)
+    ): HttpResponse {
+        require(!id.isNullOrBlank() || !title.isNullOrBlank()) {
+            "both \"id\" and \"title\" are null or blank"
+        }
+        return client.get {
+            parameter(IMDB_ID, id)
+            parameter(TITLE, title)
+            parameter(RESULT_TYPE, type)
+            parameter(YEAR, year)
+            parameter(PLOT, plot)
+            parameter(FORMAT, format)
+            parameter(VERSION, version)
+        }
     }
 
     override suspend fun searchFilms(

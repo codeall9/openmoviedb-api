@@ -1,5 +1,6 @@
 package io.codeall9.film.omdb.client
 
+import io.codeall9.film.omdb.api.FilmType
 import io.codeall9.film.omdb.exception.OpenMovieException
 import io.codeall9.film.omdb.model.ErrorStatus
 import io.codeall9.film.omdb.model.FilmInfo
@@ -47,9 +48,9 @@ class SearchQueryTest {
 
     private val mockDb = MockOmdbClient.doOnSearch { query, type, _, page ->
         when {
-            query == OmdbClient.TYPE_MOVIE && type == OmdbClient.TYPE_MOVIE -> movieResult
-            query == OmdbClient.TYPE_SERIES && type == OmdbClient.TYPE_SERIES -> seriesResult
-            query == OmdbClient.TYPE_EPISODE && type == OmdbClient.TYPE_EPISODE -> episodeResult
+            query == FilmType.MOVIE && type == FilmType.MOVIE -> movieResult
+            query == FilmType.SERIES && type == FilmType.SERIES -> seriesResult
+            query == FilmType.EPISODE && type == FilmType.EPISODE -> episodeResult
             query.isNotBlank() && type == null -> allResult[(page - 1) % 2]
             else -> throw OpenMovieException(ErrorStatus("False", "Movie not found"))
         }
@@ -58,7 +59,7 @@ class SearchQueryTest {
     @Test
     fun verifySearchMovie() = runSuspend {
 //        println("getMovieResult")
-        mockDb.getQuery(OmdbClient.TYPE_MOVIE)
+        mockDb.getQuery(FilmType.MOVIE)
             .getMovieResult()
             .run { assertEquals(movieResult, this) }
     }
@@ -66,7 +67,7 @@ class SearchQueryTest {
     @Test
     fun verifySearchSeries() = runSuspend {
 //        println("getSeriesResult")
-        mockDb.getQuery(OmdbClient.TYPE_SERIES)
+        mockDb.getQuery(FilmType.SERIES)
             .getSeriesResult()
             .run { assertEquals(seriesResult, this) }
     }
@@ -74,7 +75,7 @@ class SearchQueryTest {
     @Test
     fun verifySearchEpisode() = runSuspend {
 //        println("getEpisodeResult")
-        mockDb.getQuery(OmdbClient.TYPE_EPISODE)
+        mockDb.getQuery(FilmType.EPISODE)
             .getEpisodeResult()
             .run { assertEquals(episodeResult, this) }
     }

@@ -2,17 +2,16 @@ package io.codeall9.film.omdb.client
 
 import io.codeall9.film.omdb.api.OmdbApi
 import io.codeall9.film.omdb.api.OpenMovieService
+import io.codeall9.film.omdb.api.buildOpenMovieClient
 import io.codeall9.film.omdb.exception.OpenMovieException
 import io.codeall9.film.omdb.runSuspend
 import io.codeall9.film.omdb.test.*
-import io.ktor.client.HttpClient
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.MockRequestHandleScope
 import io.ktor.client.engine.mock.respond
 import io.ktor.client.features.logging.DEFAULT
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.HttpResponseData
 import io.ktor.http.ContentType
@@ -44,13 +43,14 @@ internal class OmdbClientTest {
         }
     }
 
-    private val mockApi: OmdbApi = OpenMovieService(HttpClient(MockEngine) {
-        engine { addHandler(mockHandler) }
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.INFO
-        }
-    })
+    private val mockClient = buildOpenMovieClient(
+        engineFactory =  MockEngine,
+        engineConfig = { addHandler(mockHandler) },
+        apiKey = "testKey",
+        initLogger = { logger = Logger.DEFAULT; level = LogLevel.INFO }
+    )
+
+    private val mockApi: OmdbApi = OpenMovieService(mockClient)
 
     private val database = OmdbClient(mockApi)
 

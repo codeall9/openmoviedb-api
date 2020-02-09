@@ -14,24 +14,24 @@ import kotlinx.serialization.json.Json
 
 class OmdbClient(private val apiService: OmdbApi, var defaultPlot: String? = null) : OpenMovieDatabase {
 
-    override suspend fun getMovieById(id: String, year: String?, plot: String?): Movie = apiService
-        .getMovie(id, null, year, plot ?: defaultPlot)
+    override suspend fun getMovieById(id: String, plot: String?): Movie = apiService
+        .getMovie(id, null, null, plot ?: defaultPlot)
         .parseResponse(Movie.serializer())
 
     override suspend fun getMovieByTitle(title: String, year: String?, plot: String?): Movie = apiService
         .getMovie(null, title, year, plot ?: defaultPlot)
         .parseResponse(Movie.serializer())
 
-    override suspend fun getSeriesById(id: String, year: String?, plot: String?): Series = apiService
-        .getSeries(id, null, year, plot ?: defaultPlot)
+    override suspend fun getSeriesById(id: String, plot: String?): Series = apiService
+        .getSeries(id, null, null, plot ?: defaultPlot)
         .parseResponse(Series.serializer())
 
     override suspend fun getSeriesByTitle(title: String, year: String?, plot: String?): Series = apiService
         .getSeries(null, title, year, plot ?: defaultPlot)
         .parseResponse(Series.serializer())
 
-    override suspend fun getEpisodeById(id: String, year: String?, plot: String?): Episode = apiService
-        .getEpisode(id, null, year, plot ?: defaultPlot)
+    override suspend fun getEpisodeById(id: String, plot: String?): Episode = apiService
+        .getEpisode(id, null, null, plot ?: defaultPlot)
         .parseResponse(Episode.serializer())
 
     override suspend fun getEpisodeByTitle(title: String, year: String?, plot: String?): Episode = apiService

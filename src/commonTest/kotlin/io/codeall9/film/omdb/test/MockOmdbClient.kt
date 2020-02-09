@@ -16,8 +16,8 @@ class MockOmdbClient(
     private val onSearch: MockSearchHandler? = null
 ): OpenMovieDatabase {
 
-    override suspend fun getMovieById(id: String, year: String?, plot: String?): Movie {
-        return onGetMovie?.invoke(id, year, plot)
+    override suspend fun getMovieById(id: String, plot: String?): Movie {
+        return onGetMovie?.invoke(id, null, plot)
             ?: error("Unhandled request")
     }
 
@@ -26,8 +26,8 @@ class MockOmdbClient(
             ?: error("Unhandled request")
     }
 
-    override suspend fun getSeriesById(id: String, year: String?, plot: String?): Series {
-        return onGetSeries?.invoke(id, year, plot)
+    override suspend fun getSeriesById(id: String, plot: String?): Series {
+        return onGetSeries?.invoke(id, null, plot)
             ?: error("Unhandled request")
     }
 
@@ -36,8 +36,8 @@ class MockOmdbClient(
             ?: error("Unhandled request")
     }
 
-    override suspend fun getEpisodeById(id: String, year: String?, plot: String?): Episode {
-        return onGetEpisode?.invoke(id, year, plot)
+    override suspend fun getEpisodeById(id: String, plot: String?): Episode {
+        return onGetEpisode?.invoke(id, null, plot)
             ?: error("Unhandled request")
     }
 

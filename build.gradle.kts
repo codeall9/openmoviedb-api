@@ -22,11 +22,8 @@ kotlin {
     *  To find out how to configure the targets, please follow the link:
     *  https://kotlinlang.org/docs/reference/building-mpp-with-gradle.html#setting-up-targets */
     jvm()
-    js {
-        /*browser {
-        }
-        nodejs {
-        }*/
+    js(IR) {
+        browser()
     }
     // For ARM, should be changed to iosArm32 or iosArm64
     // For Linux, should be changed to e.g. linuxX64
@@ -34,32 +31,25 @@ kotlin {
     // For Windows, should be changed to e.g. mingwX64
 //    mingwX64("mingw")
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
-                implementation(kotlin("stdlib-common"))
-                implementation(Library.Serialization.runtime_common)
+                implementation(Library.Serialization.core)
                 implementation(Library.Ktor.common)
-                implementation(Library.Ktor.Json.common)
-                implementation(Library.Ktor.Serialization.common)
-                implementation(Library.Ktor.Logging.common)
+                implementation(Library.Ktor.Features.json)
+                implementation(Library.Ktor.Features.serialization)
+                implementation(Library.Ktor.Features.logging)
             }
         }
-        val commonTest by getting {
+        commonTest {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                api(Library.Ktor.Mock.common)
+                api(Library.Ktor.Features.mock)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-jdk8"))
-                implementation(Library.Serialization.runtime_jvm)
-                implementation(Library.Ktor.Core.jvm)
-                implementation(Library.Ktor.Json.jvm)
-                implementation(Library.Ktor.Serialization.jvm)
-                implementation(Library.Ktor.Logging.jvm)
                 implementation("ch.qos.logback:logback-classic:1.2.3")
             }
         }
@@ -68,27 +58,18 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation(kotlin("test-junit"))
 
-                api(Library.Ktor.Mock.jvm)
+                api(Library.Coroutines.test_jvm)
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(kotlin("stdlib-js"))
-//                implementation(Library.Coroutines.core_js)
-                implementation(Library.Serialization.runtime_js)
-                implementation(Library.Ktor.Core.js)
-                implementation(Library.Ktor.Json.js)
-                implementation(Library.Ktor.Serialization.js)
-                implementation(Library.Ktor.Logging.js)
             }
         }
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
 
-                api(Library.Ktor.Mock.js)
-//                api(npm("text-encoding"))
             }
         }
 
@@ -126,7 +107,7 @@ publishing {
         val metadata by getting { /* Setup the publication for Kotlin metadata */ }
     }
 }
-/*tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>()
-    .configureEach {
-        kotlinOptions { freeCompilerArgs = listOf("-Xuse-experimental=kotlin.Experimental") }
-    }*/
+
+tasks.named<Wrapper>("wrapper") {
+    distributionType = Wrapper.DistributionType.ALL
+}

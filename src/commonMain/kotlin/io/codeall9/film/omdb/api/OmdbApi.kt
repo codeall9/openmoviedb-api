@@ -2,10 +2,9 @@ package io.codeall9.film.omdb.api
 
 import io.ktor.client.statement.HttpResponse
 
-private const val FORMAT_JSON = "json"
 private const val VERSION = "1"
 
-interface OmdbApi {
+internal interface OmdbApi {
 
     /**
      * Search by [id] or [title], both [id] and [title] are optional at least one argument is required.
@@ -48,53 +47,3 @@ interface OmdbApi {
         version: String = VERSION
     ): HttpResponse
 }
-
-/**
- * Search movie
- * @see [OmdbApi.getDetail]
- */
-suspend fun OmdbApi.getMovie(
-    id: String? = null,
-    title: String? = null,
-    year: String?,
-    plot: String?,
-    format: String? = FORMAT_JSON
-): HttpResponse = getDetail(id, title, FilmType.MOVIE, year, plot, format)
-
-/**
- * Search series
- * @see [OmdbApi.getDetail]
- */
-suspend fun OmdbApi.getSeries(
-    id: String? = null,
-    title: String? = null,
-    year: String?,
-    plot: String?,
-    format: String? = FORMAT_JSON
-): HttpResponse = getDetail(id, title, FilmType.SERIES, year, plot, format)
-
-/**
- * Search episode
- * @see [OmdbApi.getDetail]
- */
-suspend fun OmdbApi.getEpisode(
-    id: String? = null,
-    title: String? = null,
-    year: String?,
-    plot: String?,
-    format: String? = FORMAT_JSON
-): HttpResponse = getDetail(id, title, FilmType.EPISODE, year, plot, format)
-
-
-/**
- * Search films
- * @see [OmdbApi.searchFilms]
- */
-suspend fun OmdbApi.searchFilms(
-    query: String,
-    type: String?,
-    year: String?,
-    page: Int = 1,
-    format: String? = FORMAT_JSON,
-    version: String = VERSION
-): HttpResponse = searchFilms(query, type, year, format, page, version)

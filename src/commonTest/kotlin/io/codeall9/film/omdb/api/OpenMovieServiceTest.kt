@@ -69,9 +69,9 @@ internal class OpenMovieServiceTest {
     }
 
     @Test
-    fun shouldRequireIdOrTitleNotNull() {
+    fun shouldRequireIdOrTitleNotNull() = runSuspend {
         assertFailsWith<IllegalArgumentException> {
-            runSuspend { service.getDetail(null, null, null, null, null, null) }
+            service.getDetail(null, null, null, null, null, null)
         }
     }
 

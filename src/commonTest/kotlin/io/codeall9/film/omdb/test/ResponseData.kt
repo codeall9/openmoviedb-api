@@ -94,3 +94,4 @@ private val searchList = listOf(
 )
 internal val testSearch1 = SearchResult(searchList, "84", "True")
 
+internal val testNotFoundError = ErrorStatus("False", "data not found!")

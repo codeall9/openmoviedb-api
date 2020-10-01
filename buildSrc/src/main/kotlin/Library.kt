@@ -1,41 +1,43 @@
 object Library {
-    private const val kotlinx = "org.jetbrains.kotlinx"
+    private const val COLON = ":"
+    private const val KOTLINX = "org.jetbrains.kotlinx$COLON"
+    private const val KTOR = "io.ktor$COLON"
 
     object Coroutines {
-        private const val version = Version.coroutines
-        const val core = "$kotlinx:kotlinx-coroutines-core:$version"
-        const val jdk8 = "$kotlinx:kotlinx-coroutines-jdk8:$version"
-        const val guava = "$kotlinx:kotlinx-coroutines-guava:$version"
-        const val slf4j = "$kotlinx:kotlinx-coroutines-slf4j:$version"
-        const val play_services = "$kotlinx:kotlinx-coroutines-play-services:$version"
-        const val android = "$kotlinx:kotlinx-coroutines-android:$version"
-        const val test_jvm = "$kotlinx:kotlinx-coroutines-test:$version"
+        private const val VERSION = "$COLON${Version.COROUTINES}"
+        const val CORE = "${KOTLINX}kotlinx-coroutines-core$VERSION"
+        const val JDK8 = "${KOTLINX}kotlinx-coroutines-jdk8$VERSION"
+        const val GUAVA = "${KOTLINX}kotlinx-coroutines-guava$VERSION"
+        const val SLF4J = "${KOTLINX}kotlinx-coroutines-slf4j$VERSION"
+        const val PLAY_SERVICES = "${KOTLINX}kotlinx-coroutines-play-services$VERSION"
+        const val ANDROID = "${KOTLINX}kotlinx-coroutines-android$VERSION"
+        const val test_jvm = "${KOTLINX}kotlinx-coroutines-test$VERSION"
     }
 
     object Serialization {
-        private const val version = Version.serialization
-        const val core = "$kotlinx:kotlinx-serialization-core:$version"
-        const val protobuf = "$kotlinx:kotlinx-serialization-protobuf:$version"
+        private const val VERSION = "$COLON${Version.SERIALIZATION}"
+        const val CORE = "${KOTLINX}kotlinx-serialization-core$VERSION"
+        const val JSON = "${KOTLINX}kotlinx-serialization-json$VERSION"
+        const val PROTOBUF = "${KOTLINX}kotlinx-serialization-protobuf$VERSION"
     }
 
     object Ktor {
-        private const val groupId = "io.ktor"
-        private const val version = Version.ktor
-        const val common = "$groupId:ktor-client-core:$version"
-        const val android = "$groupId:ktor-client-android:$version"
-        const val ios = "$groupId:ktor-client-ios:$version"
-        const val js = "$groupId:ktor-client-js:$version"
-        const val desktops = "$groupId:ktor-client-curl:$version"
-        const val jvm_apache = "$groupId:ktor-client-apache:$version"
-        const val jvm_coroutine = "$groupId:ktor-client-cio:$version"
-        const val jvm_jetty = "$groupId:ktor-client-jetty:$version"
-        const val jvm_okhttp = "$groupId:ktor-client-okhttp:$version"
+        private const val VERSION = "$COLON${Version.KTOR}"
+        const val COMMON = "${KTOR}ktor-client-core$VERSION"
+        const val ANDROID = "${KTOR}ktor-client-android$VERSION"
+        const val IOS = "${KTOR}ktor-client-ios$VERSION"
+        const val JS = "${KTOR}ktor-client-js$VERSION"
+        const val DESKTOPS = "${KTOR}ktor-client-curl$VERSION"
+        const val JVM_APACHE = "${KTOR}ktor-client-apache$VERSION"
+        const val JVM_COROUTINE = "${KTOR}ktor-client-cio$VERSION"
+        const val JVM_JETTY = "${KTOR}ktor-client-jetty$VERSION"
+        const val JVM_OKHTTP = "${KTOR}ktor-client-okhttp$VERSION"
 
         object Features {
-            const val json = "$groupId:ktor-client-json:$version"
-            const val serialization = "$groupId:ktor-client-serialization:$version"
-            const val logging = "$groupId:ktor-client-logging:$version"
-            const val mock = "$groupId:ktor-client-mock:$version"
+            const val JSON = "${KTOR}ktor-client-json$VERSION"
+            const val SERIALIZATION = "${KTOR}ktor-client-serialization$VERSION"
+            const val LOGGING = "${KTOR}ktor-client-logging$VERSION"
+            const val MOCK = "${KTOR}ktor-client-mock$VERSION"
         }
     }
 }

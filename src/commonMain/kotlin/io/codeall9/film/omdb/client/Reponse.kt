@@ -10,8 +10,10 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-internal val omdbJsonFormat by lazy {
-    Json {
+internal val omdbJsonFormat by lazy { createOmdbJsonFormat() }
+
+internal fun createOmdbJsonFormat(): Json {
+    return Json {
         isLenient = true
         ignoreUnknownKeys = true
         allowSpecialFloatingPointValues = true
@@ -19,18 +21,20 @@ internal val omdbJsonFormat by lazy {
     }
 }
 
-internal suspend inline fun <reified T> HttpResponse.parseOmdbResponse(): T {
-    val element = parseOmdbJsonElement()
-    return element.takeIf { it.isResponseSuccess() }
-            ?.parseOmdbJson<T>()
-            ?: throw OpenMovieException(element.parseOmdbJson<ErrorStatus>())
-}
-
 internal inline fun <reified T> JsonElement.parseOmdbJson(): T {
     return omdbJsonFormat.decodeFromJsonElement(this)
 }
 
-private suspend fun HttpResponse.parseOmdbJsonElement(): JsonElement = omdbJsonFormat.parseToJsonElement(readText())
+internal fun String.toOmdbJsonElement(): JsonElement = omdbJsonFormat.parseToJsonElement(this)
+
+internal suspend inline fun <reified T> HttpResponse.parseOmdbResponse(): T {
+    val element = readOmdbJsonElement()
+    return element.takeIf { it.isResponseSuccess() }
+        ?.parseOmdbJson<T>()
+        ?: throw OpenMovieException(element.parseOmdbJson())
+}
+
+private suspend fun HttpResponse.readOmdbJsonElement(): JsonElement = readText().toOmdbJsonElement()
 
 private fun JsonElement.isResponseSuccess(): Boolean {
     return jsonObject["Response"]?.let { it.jsonPrimitive.content == "True" } == true

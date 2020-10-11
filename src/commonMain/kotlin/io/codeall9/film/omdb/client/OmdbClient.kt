@@ -48,7 +48,7 @@ class OmdbClient internal constructor(private val apiService: OmdbApi, var defau
                 apiKey: String,
                 plot: String? = null,
                 logConfig: Logging.Config.() -> Unit = simpleLogger
-        ): OmdbClient {
+        ): OpenMovieDatabase {
             val httpClient = buildOpenMovieClient(apiKey = apiKey, initLogger = logConfig)
             return OmdbClient(OpenMovieService(httpClient), plot)
         }
@@ -61,7 +61,7 @@ class OmdbClient internal constructor(private val apiService: OmdbApi, var defau
                 apiHost: String = API_HOST,
                 apiProtocol: URLProtocol = URLProtocol.HTTP,
                 initLogger: Logging.Config.() -> Unit = simpleLogger
-        ): OmdbClient {
+        ): OpenMovieDatabase {
             val httpClient = buildOpenMovieClient(
                     engineFactory,
                     engineConfig,

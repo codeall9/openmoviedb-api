@@ -36,11 +36,16 @@ kotlin {
             }
         }
     }
-    // For ARM, should be changed to iosArm32 or iosArm64
-    // For Linux, should be changed to e.g. linuxX64
-    // For MacOS, should be changed to e.g. macosX64
-    // For Windows, should be changed to e.g. mingwX64
-//    mingwX64("mingw")
+
+    val hostOs = System.getProperty("os.name")
+    val isMingwX64 = hostOs.startsWith("Windows")
+    val nativeTarget = when {
+        hostOs == "Mac OS X" -> macosX64("native")
+        hostOs == "Linux" -> linuxX64("native")
+        isMingwX64 -> mingwX64("native")
+        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -79,6 +84,9 @@ kotlin {
                 implementation(kotlin("test-js"))
             }
         }
+
+        val nativeMain by getting
+        val nativeTest by getting
 
         // Note that the Kotlin metadata is here, too.
         configure(listOf(targets["metadata"], jvm(), js())) {

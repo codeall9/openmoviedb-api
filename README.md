@@ -12,8 +12,17 @@ gradlew build
 
 ## Usage
 
+#### Select an engine
+Declare an [HTTP engines](https://ktor.io/clients/http-client/engines.html) in your project, for example:
 ```kotlin
-val omdb = OmdbClient("apiKey")
+dependencies {
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+}
+```
+
+#### Create requests
+```kotlin
+val omdb: OpenMovieDatabase = OmdbClient("apiKey")
 
 val movie1: Movie = omdb.getMovieById("id")
 val movie2: Movie = omdb.getMovieByTitle("title")
@@ -22,7 +31,7 @@ val search: SearchResult = omdb.searchFilms("query")
 ```
 
 ## Roadmap
- - [ ] Support desktop or native platform
+ - [X] Support desktop or native platform
  - [ ] Support Poster API
  
 
@@ -32,4 +41,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
-This project is under [GNU General Public License v3.0](./LICENSE)
+This project is under [Mozilla Public License Version 2.0](./LICENSE)

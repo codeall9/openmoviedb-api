@@ -33,7 +33,7 @@ internal class HttpClientBuilderTest {
 
         assertEquals(apiHost, actual.url.host)
         assertEquals(apiKey, actual.url.parameters["apiKey"])
-        assertEquals(URLProtocol.HTTP, actual.url.protocol)
+        assertEquals(URLProtocol.HTTPS, actual.url.protocol)
         assertTrue { actual.headers.contains(HttpHeaders.Accept, ContentType.Application.Json.toString()) }
     }
 }

@@ -25,7 +25,7 @@ internal val simpleLogger: Logging.Config.() -> Unit = {
 internal fun HttpClientConfig<*>.defaultOMDbRequest(
     apiHost: String,
     apiKey: String,
-    apiProtocol: URLProtocol = URLProtocol.HTTP
+    apiProtocol: URLProtocol = URLProtocol.HTTPS
 ) = defaultRequest {
     url {
         protocol = apiProtocol
@@ -41,7 +41,7 @@ internal fun <E : HttpClientEngineConfig> buildOpenMovieClient(
     apiKey: String,
     apiHost: String = OMDB_BASE_URL,
     initLogger: Logging.Config.() -> Unit = {},
-    apiProtocol: URLProtocol = URLProtocol.HTTP
+    apiProtocol: URLProtocol = URLProtocol.HTTPS
 ): HttpClient = HttpClient(engineFactory) {
     engine(engineConfig)
     defaultOMDbRequest(apiHost, apiKey, apiProtocol)
@@ -53,7 +53,7 @@ internal fun buildOpenMovieClient(
     apiKey: String,
     apiHost: String = OMDB_BASE_URL,
     initLogger: Logging.Config.() -> Unit = {},
-    apiProtocol: URLProtocol = URLProtocol.HTTP
+    apiProtocol: URLProtocol = URLProtocol.HTTPS
 ): HttpClient = HttpClient {
     defaultOMDbRequest(apiHost, apiKey, apiProtocol)
     Logging(initLogger)
